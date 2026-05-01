@@ -20,8 +20,8 @@ public class TransactionController {
         this.repository = repository;
     }
 
-    @GetMapping("findAllList")
-    public List<Transaction> findAllList() {
+    @GetMapping
+    public List<Transaction> listar() {
         return repository.findAll();
     }
 
