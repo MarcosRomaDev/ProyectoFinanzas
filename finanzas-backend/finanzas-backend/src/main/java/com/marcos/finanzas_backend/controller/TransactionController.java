@@ -20,8 +20,8 @@ public class TransactionController {
         this.repository = repository;
     }
 
-    @GetMapping("path")
-    public List<Transaction> findAlList() {
+    @GetMapping("findAllList")
+    public List<Transaction> findAllList() {
         return repository.findAll();
     }
 
