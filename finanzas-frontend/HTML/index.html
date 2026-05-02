@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Finanzas</title>
+    <style>
+        body { font-family: sans-serif; margin: 40px; background-color: #f4f4f9; }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+        th { background-color: #eee; }
+        .tipo-gasto { color: #e74c3c; font-weight: bold; }
+        .tipo-ingreso { color: #2ecc71; font-weight: bold; }
+        .badge { padding: 4px 8px; border-radius: 4px; color: white; font-size: 0.8em; }
+    </style>
+</head>
+<body>
+    <h1>Listado de Transacciones</h1>
+    <button onclick="cargarTransacciones()">Actualizar Datos</button>
+    <br><br>
+    <table>
+        <thead>
+            <tr>
+                <th>Descripción</th>
+                <th>Importe</th>
+                <th>Categoría</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody id="tabla-body">
+            <!-- Los datos de Spring aparecerán aquí -->
+        </tbody>
+    </table>
+
+    <script src="../JavaScript/app.js"></script>
+</body>
+</html>
