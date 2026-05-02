@@ -12,6 +12,11 @@ import lombok.Data;
 @Data
 
 public class Category {
+
+    public Category(){
+        // Constructor vacio
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
