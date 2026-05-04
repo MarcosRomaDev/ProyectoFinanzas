@@ -29,6 +29,10 @@ async function cargarTransacciones() {
                     </span>
                 </td>
                 <td>${t.date}</td>
+                <td>
+                    <button class="btn-borrar" onclick="borrarTransaccion(${t.id})">
+                    Eliminar
+                </td>
             `;
             tbody.appendChild(fila);
         });
@@ -63,7 +67,6 @@ async function cargarCategorias() {
 }
 
 const formulario = document.getElementById('transaccion-form');
-
 formulario.addEventListener('submit', async (evento) => {
     evento.preventDefault();
 
@@ -110,6 +113,23 @@ async function enviarTransaccion(objetoDatos) {
     } catch (error) {
         console.error("Error de red:", error);
         alert("Error de conexión con el servidor.");
+    }
+}
+
+async function borrarTransaction(id) {
+    if(!confirm("¿Seguro que quieres eliminar esta transacción?")) return;
+    
+    try{
+        const respuesta = await fetch(`http://localhost:8080/api/transactions/${id}`, {
+             method: 'DELETE'
+        });
+        if(respuesta.ok){
+            await cargarTransactions();
+        }else{
+            alert("No se pudo eliminar la transacción.");
+        }  
+    }catch(error){
+        console.error("Error al borrar:", error);
     }
 }
 

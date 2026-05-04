@@ -4,59 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mis Finanzas</title>
-    <style>
-        body { font-family: sans-serif; margin: 40px; background-color: #f4f4f9; }
-        table { width: 100%; border-collapse: collapse; background: white; }
-        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
-        th { background-color: #eee; }
-        .tipo-gasto { color: #e74c3c; font-weight: bold; }
-        .tipo-ingreso { color: #2ecc71; font-weight: bold; }
-        .badge { padding: 4px 8px; border-radius: 4px; color: white; font-size: 0.8em; }
-        button[type="submit"] { margin-top: 10px; cursor: pointer; }
-    </style>
+    <!-- Vinculamos el CSS externo -->
+    <link rel="stylesheet" href="../CSS/style.css">
 </head>
 <body>
     <h1>Listado de Transacciones</h1>
     <button onclick="cargarTransacciones()">Actualizar Datos</button>
     <br><br>
-<section id="contenedor-formulario" style="margin-bottom: 30px; padding: 20px; background-color: #f4f4f4; border-radius: 8px;">
-    <h2>Nueva Transacción</h2>
-    
-    <form id="transaccion-form">
-        
-        <div class="campo">
-            <label for="descripcion">Descripción:</label>
-            <input type="text" id="descripcion" placeholder="Ej: Compra supermercado" required>
-        </div>
 
-        <div class="campo">
-            <label for="monto">Importe:</label>
-            <input type="number" id="monto" step="0.01" placeholder="0.00" required>
-        </div>
+    <section id="contenedor-formulario">
+        <h2>Nueva Transacción</h2>
+        <form id="transaccion-form">
+            <div class="campo">
+                <label for="descripcion">Descripción:</label>
+                <input type="text" id="descripcion" placeholder="Ej: Compra supermercado" required>
+            </div>
 
-        <div class="campo">
-            <label for="tipo">Tipo:</label>
-            <select id="tipo">
-                <option value="GASTO">Gasto</option>
-                <option value="INGRESO">Ingreso</option>
-            </select>
-        </div>
+            <div class="campo">
+                <label for="monto">Importe:</label>
+                <input type="number" id="monto" step="0.01" placeholder="0.00" required>
+            </div>
 
-        <div class="campo">
-            <label for="categoria-select">Categoría:</label>
-            <select id="categoria-select" required>
-                <option value="">Cargando categorías...</option>
-            </select>
-        </div>
+            <div class="campo">
+                <label for="tipo">Tipo:</label>
+                <select id="tipo">
+                    <option value="GASTO">Gasto</option>
+                    <option value="INGRESO">Ingreso</option>
+                </select>
+            </div>
 
-        <div class="campo">
-            <label for="fecha">Fecha:</label>
-            <input type="date" id="fecha" required>
-        </div>
+            <div class="campo">
+                <label for="categoria-select">Categoría:</label>
+                <select id="categoria-select" required>
+                    <option value="">Cargando categorías...</option>
+                </select>
+            </div>
 
-        <button type="submit" style="margin-top: 10px; cursor: pointer;">Guardar Transacción</button>
-    </form>
-</section>
+            <div class="campo">
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" required>
+            </div>
+
+            <button type="submit">Guardar Transacción</button>
+        </form>
+    </section>
 
     <table>
         <thead>
@@ -65,6 +56,7 @@
                 <th>Importe</th>
                 <th>Categoría</th>
                 <th>Fecha</th>
+                <th>Acciones</th> <!-- Nueva columna para el botón de borrar -->
             </tr>
         </thead>
         <tbody id="tabla-body">
