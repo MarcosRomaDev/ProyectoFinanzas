@@ -39,5 +39,80 @@ async function cargarTransacciones() {
     }
 }
 
+async function cargarCategorias() {
+    try {
+        // Consultamos controlador de Java
+        const respuesta = await fetch('http://localhost:8080/api/categories');
+        const categorias = await respuesta.json();
+
+        const select = document.getElementById('categoria-select');
+        
+        // Limpiamos el contenido previo
+        select.innerHTML = '<option value="">-- Selecciona Categoría --</option>';
+
+        // Recorremos la lista de categorías y creamos etiquetas <option>
+        categorias.forEach(cat => {
+            const opcion = document.createElement('option');
+            opcion.value = cat.id; // El valor que JS mandará a Java es el ID
+            opcion.textContent = cat.name; // Lo que el usuario ve es el nombre
+            select.appendChild(opcion);
+        });
+    } catch (error) {
+        console.error("Fallo al cargar categorías:", error);
+    }
+}
+
+const formulario = document.getElementById('transaccion-form');
+
+formulario.addEventListener('submit', async (evento) => {
+    evento.preventDefault();
+
+    // Creamos el objeto "paquete" para enviarlo a Java
+    // El nombre de las propiedades debe coincidir con tus atributos de la Clase Java
+    const transaccion = {
+        description: document.getElementById('descripcion').value,
+        amount: Number.parseFloat(document.getElementById('monto').value),
+        type: document.getElementById('tipo').value,
+        date: document.getElementById('fecha').value,
+        // Como en Java usas un objeto Category, aquí mandamos un objeto con su ID
+        category: {
+            id: Number.parseInt(document.getElementById('categoria-select').value)
+        }
+    };
+
+    // Llamamos a la función que enviará este objeto por la red
+    await enviarTransaccion(transaccion);
+});
+
+async function enviarTransaccion(objetoDatos) {
+    try {
+        const respuesta = await fetch('http://localhost:8080/api/transactions', {
+            method: 'POST', // Queremos crear un recurso nuevo
+            headers: {
+                'Content-Type': 'application/json' // Avisamos a Java que enviamos JSON
+            },
+            body: JSON.stringify(objetoDatos) // Convertimos el objeto JS a texto
+        });
+
+        if (respuesta.ok) {
+            alert("¡Transacción guardada!");
+            formulario.reset(); // Limpia los campos del formulario
+            
+            // IMPORTANTE: Volvemos a pedir las transacciones al servidor
+            // para que la nueva aparezca en la tabla automáticamente.
+            await cargarTransacciones(); 
+        } else {
+            // Si el servidor responde con error (ej. 400 o 500)
+            const errorDetalle = await respuesta.text();
+            console.error("Error del servidor:", errorDetalle);
+            alert("No se pudo guardar: " + respuesta.status);
+        }
+    } catch (error) {
+        console.error("Error de red:", error);
+        alert("Error de conexión con el servidor.");
+    }
+}
+
 // Ejecutar al cargar la página
 cargarTransacciones();
+cargarCategorias();
