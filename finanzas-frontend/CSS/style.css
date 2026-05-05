@@ -1,70 +1,149 @@
 /* CSS/style.css */
-body { 
-    font-family: sans-serif; 
-    margin: 40px; 
-    background-color: #f4f4f9; 
+
+:root {
+    /* Variables para cambiar colores en un solo sitio y que afecte a todo */
+    --border-color: #e0e0e0;
+    --text-main: #2c3e50;
+    --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
 }
 
+body { 
+    font-family: 'Inter', -apple-system, sans-serif; 
+    margin: 0;
+    padding: 60px 40px;
+    /* El degradado crea ese efecto de "fondo difuminado" profesional */
+    background: var(--bg-gradient); 
+    min-height: 100vh;
+    color: var(--text-main);
+    /* Suaviza el renderizado de fuentes en pantallas modernas */
+    -webkit-font-smoothing: antialiased; 
+}
+
+h1, h2 {
+    font-weight: 300; /* Letra fina para que se vea elegante */
+    letter-spacing: -1px; /* Letras más juntas, estilo editorial */
+    border-bottom: 1px solid black; /* La línea negra fina que pediste */
+    padding-bottom: 10px;
+    display: inline-block;
+    margin-bottom: 30px;
+    text-transform: lowercase; /* Opcional: minúsculas dan un toque muy moderno */
+}
+
+/* --- TABLA: Estilo "Glassmorphism" --- */
 table { 
     width: 100%; 
     border-collapse: collapse; 
-    background: white; 
+    /* Fondo semitransparente para que se vea el difuminado de atrás */
+    background: rgba(255, 255, 255, 0.6); 
+    /* El efecto de desenfoque de cristal (solo funciona en navegadores modernos) */
+    backdrop-filter: blur(8px); 
     margin-top: 20px;
+    border-top: 2px solid black; /* Línea superior más gruesa para dar peso visual */
 }
 
 th, td { 
-    padding: 12px; 
-    border: 1px solid #ddd; 
+    padding: 16px 12px; 
+    border-bottom: 1px solid var(--border-color); 
     text-align: left; 
 }
 
 th { 
-    background-color: #eee; 
+    font-weight: 600;
+    text-transform: uppercase; /* Mayúsculas para los encabezados */
+    font-size: 0.7rem;
+    letter-spacing: 1.5px; /* Espaciado entre letras para legibilidad */
+    color: #888;
 }
 
-.tipo-gasto { color: #e74c3c; font-weight: bold; }
-.tipo-ingreso { color: #2ecc71; font-weight: bold; }
-
-.badge { 
-    padding: 4px 8px; 
-    border-radius: 4px; 
-    color: white; 
-    font-size: 0.8em; 
-}
-
-/* Estilos del formulario que antes estaban inline */
+/* --- FORMULARIO: Sin bloques, solo líneas --- */
 #contenedor-formulario {
-    margin-bottom: 30px; 
-    padding: 20px; 
-    background-color: #f4f4f4; 
-    border-radius: 8px;
+    margin-bottom: 50px; 
+    background: transparent; /* Eliminamos el bloque gris anterior */
 }
 
 .campo {
-    margin-bottom: 10px;
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column; /* Label arriba, Input abajo */
 }
 
+input, select {
+    background: transparent;
+    border: none;
+    /* Solo línea inferior para un look muy limpio */
+    border-bottom: 1px solid var(--border-color); 
+    border-radius: 0; 
+    padding: 10px 5px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+    /* Al hacer clic, la línea se vuelve negra */
+    border-bottom-color: black; 
+}
+
+/* --- BOTONES: Estilo Arquitectura --- */
 button {
     cursor: pointer;
-    padding: 8px 12px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
+    padding: 10px 25px;
+    border-radius: 0; /* Sin curvas = más serio y minimalista */
+    border: 1px solid black;
+    background: transparent;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: 0.4s;
 }
 
+/* Botón principal (negro sólido) */
 button[type="submit"] {
-    background-color: #3498db;
+    background-color: black;
     color: white;
-    border: none;
 }
 
-/* Estilo para tu nuevo botón de eliminar */
-.btn-borrar {
-    background-color: #ff4d4d;
+/* Efecto Hover: se invierten los colores */
+button:hover {
+    background-color: black;
     color: white;
-    border: none;
-    padding: 5px 10px;
+}
+
+button[type="submit"]:hover {
+    background-color: #333;
+}
+
+.btn-borrar {
+    /* El botón de borrar es una línea fina roja */
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
+    padding: 4px 10px;
+    font-size: 0.65rem;
 }
 
 .btn-borrar:hover {
-    background-color: #cc0000;
+    background-color: #e74c3c;
+}
+
+/* --- DETALLES --- */
+.tipo-gasto { color: #e74c3c; }
+.tipo-ingreso { color: #27ae60; }
+
+.badge { 
+    padding: 3px 8px; 
+    border: 1px solid rgba(0,0,0,0.1); /* Borde casi invisible */
+    color: white; 
+    font-size: 0.65rem; 
+    font-weight: bold;
+}
+
+.table-controls {
+    margin-bottom: 40px;
+    display: flex;
+    gap: 50px;
+    align-items: center;
+}
+
+#orden-fecha {
+    border-bottom: 1px solid black;
+    font-weight: bold;
 }

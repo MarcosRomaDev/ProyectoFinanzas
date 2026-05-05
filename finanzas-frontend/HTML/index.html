@@ -4,14 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mis Finanzas</title>
-    <!-- Vinculamos el CSS externo -->
     <link rel="stylesheet" href="../CSS/style.css">
 </head>
 <body>
     <h1>Listado de Transacciones</h1>
-    <button onclick="loadTransactions()">Actualizar Datos</button>
-    <br><br>
 
+    <!-- Sección de controles de visualización -->
+    <div class="table-controls">
+        <button onclick="loadTransactions(currentOrder)">Actualizar Datos</button>
+        
+        <div class="sort-container">
+            <label for="orden-fecha">Ordenar por fecha:</label>
+            <select id="orden-fecha" onchange="changeOrder()">
+                <option value="desc">Más recientes primero</option>
+                <option value="asc">Más antiguas primero</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Formulario para añadir nuevas transacciones -->
     <section id="contenedor-formulario">
         <h2>Nueva Transacción</h2>
         <form id="transaccion-form">
@@ -49,17 +60,18 @@
         </form>
     </section>
 
-    <table> <!--Tabla transacciones-->
+    <!-- Tabla de datos -->
+    <table>
         <thead>
             <tr>
                 <th>Descripción</th>
                 <th>Importe</th>
                 <th>Categoría</th>
                 <th>Fecha</th>
-                <th>Acciones</th> <!-- Nueva columna para el botón de borrar -->
+                <th>Acciones</th>
             </tr>
         </thead>
-        <tbody id="tabla-body">
+        <tbody id="transactions-body"> <!-- ID actualizado para coincidir con JS -->
             <!-- Los datos de Spring aparecerán aquí -->
         </tbody>
     </table>
