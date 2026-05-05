@@ -1,4 +1,4 @@
-async function cargarTransacciones() {
+async function cargarTransactions() {
     try {
         // Llamada a tu endpoint de Spring
         const respuesta = await fetch('http://localhost:8080/api/transactions');
@@ -30,7 +30,7 @@ async function cargarTransacciones() {
                 </td>
                 <td>${t.date}</td>
                 <td>
-                    <button class="btn-borrar" onclick="borrarTransaccion(${t.id})">
+                    <button class="btn-borrar" onclick="borrarTransaction(${t.id})">
                     Eliminar
                 </td>
             `;
@@ -69,7 +69,7 @@ async function cargarCategorias() {
 const formulario = document.getElementById('transaccion-form');
 formulario.addEventListener('submit', async (evento) => {
     evento.preventDefault();
-
+    
     // Creamos el objeto "paquete" para enviarlo a Java
     // El nombre de las propiedades debe coincidir con tus atributos de la Clase Java
     const transaccion = {
@@ -84,10 +84,10 @@ formulario.addEventListener('submit', async (evento) => {
     };
 
     // Llamamos a la función que enviará este objeto por la red
-    await enviarTransaccion(transaccion);
+    await enviarTransaction(transaccion);
 });
 
-async function enviarTransaccion(objetoDatos) {
+async function enviarTransaction(objetoDatos) {
     try {
         const respuesta = await fetch('http://localhost:8080/api/transactions', {
             method: 'POST', // Queremos crear un recurso nuevo
@@ -103,7 +103,7 @@ async function enviarTransaccion(objetoDatos) {
             
             // IMPORTANTE: Volvemos a pedir las transacciones al servidor
             // para que la nueva aparezca en la tabla automáticamente.
-            await cargarTransacciones(); 
+            await cargarTransactions(); 
         } else {
             // Si el servidor responde con error (ej. 400 o 500)
             const errorDetalle = await respuesta.text();
@@ -134,5 +134,5 @@ async function borrarTransaction(id) {
 }
 
 // Ejecutar al cargar la página
-cargarTransacciones();
+cargarTransactions();
 cargarCategorias();
