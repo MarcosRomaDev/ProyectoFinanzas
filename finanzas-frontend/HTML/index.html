@@ -22,7 +22,23 @@
         </div>
     </div>
 
-    <!-- Formulario para añadir nuevas transacciones -->
+    <!-- Tabla de datos -->
+    <table>
+        <thead>
+            <tr>
+                <th>Descripción</th>
+                <th>Importe</th>
+                <th>Categoría</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="transactions-body"> <!-- ID actualizado para coincidir con JS -->
+            <!-- Los datos de Spring aparecerán aquí -->
+        </tbody>
+    </table>
+
+     <!-- Formulario para añadir nuevas transacciones -->
     <section id="contenedor-formulario">
         <h2>Nueva Transacción</h2>
         <form id="transaccion-form">
@@ -59,22 +75,6 @@
             <button type="submit">Guardar Transacción</button>
         </form>
     </section>
-
-    <!-- Tabla de datos -->
-    <table>
-        <thead>
-            <tr>
-                <th>Descripción</th>
-                <th>Importe</th>
-                <th>Categoría</th>
-                <th>Fecha</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody id="transactions-body"> <!-- ID actualizado para coincidir con JS -->
-            <!-- Los datos de Spring aparecerán aquí -->
-        </tbody>
-    </table>
     
     <script src="../JavaScript/app.js"></script>
 </body>

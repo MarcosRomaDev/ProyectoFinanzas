@@ -96,11 +96,11 @@ form.addEventListener('submit', async (event) => {
     
     const transaction = {
         description: document.getElementById('descripcion').value,
-        amount: parseFloat(document.getElementById('monto').value),
+        amount: Number.parseFloat(document.getElementById('monto').value),
         type: document.getElementById('tipo').value,
         date: document.getElementById('fecha').value,
         category: {
-            id: parseInt(document.getElementById('categoria-select').value)
+            id: Number.parseInt(document.getElementById('categoria-select').value)
         }
     };
 
