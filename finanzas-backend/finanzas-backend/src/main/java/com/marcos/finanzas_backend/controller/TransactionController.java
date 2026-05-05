@@ -3,9 +3,11 @@ package com.marcos.finanzas_backend.controller;
 import com.marcos.finanzas_backend.entity.Transaction;
 import com.marcos.finanzas_backend.repository.TransactionRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,13 +27,19 @@ public class TransactionController {
     }
 
     @GetMapping
-    public List<Transaction> listar() {
-        return repository.findAll();
+    public List<Transaction> getAll(
+        @RequestParam(defaultValue = "date") String sortField,
+        @RequestParam(defaultValue = "desc") String direction
+    ) {
+        Sort sort = direction.equalsIgnoreCase("asc") ?
+                    Sort.by(sortField).ascending() :
+                    Sort.by(sortField).descending();
+        return repository.findAll(sort);
     }
 
     @PostMapping
-    public Transaction saveTransaction(@RequestBody Transaction nuevaTransaction) {
-        return repository.save(nuevaTransaction);
+    public Transaction saveTransaction(@RequestBody Transaction newTransaction) {
+        return repository.save(newTransaction);
     }
 
     @DeleteMapping("/{id}")

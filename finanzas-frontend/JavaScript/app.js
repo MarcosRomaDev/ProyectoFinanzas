@@ -1,138 +1,130 @@
-async function cargarTransactions() {
+let currentOrder = 'desc';
+
+async function loadTransactions(direction = 'desc') {
     try {
-        // Llamada a tu endpoint de Spring
-        const respuesta = await fetch('http://localhost:8080/api/transactions');
+        // Guardamos el orden actual para que otras funciones lo sepan
+        currentOrder = direction;
+
+        // Construimos la URL con los @RequestParam que espera Java
+        const url = `http://localhost:8080/api/transactions?sortField=date&direction=${direction}`;
         
-        if (!respuesta.ok) {
-            throw new Error("Error en la respuesta del servidor");
-        }
-
-        const transacciones = await respuesta.json();
-        const tbody = document.getElementById('tabla-body');
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Network error");
         
-        // Limpiamos la tabla antes de cargar
-        tbody.innerHTML = '';
+        const transactions = await response.json();
 
-        transacciones.forEach(t => {
-            const fila = document.createElement('tr');
-            
-            // Elegimos clase CSS según el tipo
-            const claseTipo = t.type === 'GASTO' ? 'tipo-gasto' : 'tipo-ingreso';
-            const signo = t.type === 'GASTO' ? '-' : '+';
-
-            fila.innerHTML = `
-                <td>${t.description}</td>
-                <td class="${claseTipo}">${signo}${t.amount}€</td>
-                <td>
-                    <span class="badge" style="background-color: ${t.category.color}">
-                        ${t.category.name}
-                    </span>
-                </td>
-                <td>${t.date}</td>
-                <td>
-                    <button class="btn-borrar" onclick="borrarTransaction(${t.id})">
-                    Eliminar
-                </td>
-            `;
-            tbody.appendChild(fila);
-        });
+        renderTable(transactions);
 
     } catch (error) {
-        console.error("Error al conectar con la API:", error);
-        alert("No se pudo conectar con el Backend. ¿Está arrancado Spring?");
+        console.error("Error al cargar:", error);
     }
 }
 
-async function cargarCategorias() {
+function renderTable(transactions) {
+    const tbody = document.getElementById('tabla-body');
+    tbody.innerHTML = '';
+
+    transactions.forEach(transaction => {
+        const row = document.createElement('tr');
+        const typeClass = transaction.type === 'GASTO' ? 'tipo-gasto' : 'tipo-ingreso';
+        const sign = transaction.type === 'GASTO' ? '-' : '+';
+
+        row.innerHTML = `
+            <td>${transaction.description}</td>
+            <td class="${typeClass}">${sign}${transaction.amount}€</td>
+            <td>
+                <span class="badge" style="background-color: ${transaction.category.color}">
+                    ${transaction.category.name}
+                </span>
+            </td>
+            <td>${transaction.date}</td>
+            <td>
+                <button class="btn-borrar" onclick="deleteTransaction(${transaction.id})">Eliminar</button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+async function loadCategories() {
     try {
-        // Consultamos controlador de Java
-        const respuesta = await fetch('http://localhost:8080/api/categories');
-        const categorias = await respuesta.json();
+        const response = await fetch('http://localhost:8080/api/categories');
+        const categories = await response.json();
 
         const select = document.getElementById('categoria-select');
         
-        // Limpiamos el contenido previo
+        // Clear previous content
         select.innerHTML = '<option value="">-- Selecciona Categoría --</option>';
 
-        // Recorremos la lista de categorías y creamos etiquetas <option>
-        categorias.forEach(cat => {
-            const opcion = document.createElement('option');
-            opcion.value = cat.id; // El valor que JS mandará a Java es el ID
-            opcion.textContent = cat.name; // Lo que el usuario ve es el nombre
-            select.appendChild(opcion);
+        categories.forEach(cat => {
+            const option = document.createElement('option');
+            option.value = cat.id;
+            option.textContent = cat.name;
+            select.appendChild(option);
         });
     } catch (error) {
-        console.error("Fallo al cargar categorías:", error);
+        console.error("Failed to load categories:", error);
     }
 }
 
-const formulario = document.getElementById('transaccion-form');
-formulario.addEventListener('submit', async (evento) => {
-    evento.preventDefault();
+const form = document.getElementById('transaccion-form');
+form.addEventListener('submit', async (event) => {
+    event.preventDefault();
     
-    // Creamos el objeto "paquete" para enviarlo a Java
-    // El nombre de las propiedades debe coincidir con tus atributos de la Clase Java
-    const transaccion = {
+    const transaction = {
         description: document.getElementById('descripcion').value,
         amount: Number.parseFloat(document.getElementById('monto').value),
         type: document.getElementById('tipo').value,
         date: document.getElementById('fecha').value,
-        // Como en Java usas un objeto Category, aquí mandamos un objeto con su ID
         category: {
             id: Number.parseInt(document.getElementById('categoria-select').value)
         }
     };
 
-    // Llamamos a la función que enviará este objeto por la red
-    await enviarTransaction(transaccion);
+    await sendTransaction(transaction);
 });
 
-async function enviarTransaction(objetoDatos) {
+async function sendTransaction(payload) {
     try {
-        const respuesta = await fetch('http://localhost:8080/api/transactions', {
-            method: 'POST', // Queremos crear un recurso nuevo
+        const response = await fetch('http://localhost:8080/api/transactions', {
+            method: 'POST',
             headers: {
-                'Content-Type': 'application/json' // Avisamos a Java que enviamos JSON
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(objetoDatos) // Convertimos el objeto JS a texto
+            body: JSON.stringify(payload)
         });
 
-        if (respuesta.ok) {
+        if (response.ok) {
             alert("¡Transacción guardada!");
-            formulario.reset(); // Limpia los campos del formulario
-            
-            // IMPORTANTE: Volvemos a pedir las transacciones al servidor
-            // para que la nueva aparezca en la tabla automáticamente.
-            await cargarTransactions(); 
+            form.reset();
+            await loadTransactions(); 
         } else {
-            // Si el servidor responde con error (ej. 400 o 500)
-            const errorDetalle = await respuesta.text();
-            console.error("Error del servidor:", errorDetalle);
-            alert("No se pudo guardar: " + respuesta.status);
+            const errorDetail = await response.text();
+            console.error("Server error:", errorDetail);
+            alert("No se pudo guardar: " + response.status);
         }
     } catch (error) {
-        console.error("Error de red:", error);
+        console.error("Network error:", error);
         alert("Error de conexión con el servidor.");
     }
 }
 
-async function borrarTransaction(id) {
+async function deleteTransaction(id) {
     if(!confirm("¿Seguro que quieres eliminar esta transacción?")) return;
     
-    try{
-        const respuesta = await fetch(`http://localhost:8080/api/transactions/${id}`, {
-             method: 'DELETE'
+    try {
+        const response = await fetch(`http://localhost:8080/api/transactions/${id}`, {
+            method: 'DELETE'
         });
-        if(respuesta.ok){
-            await cargarTransactions();
-        }else{
+        if (response.ok) {
+            await loadTransactions();
+        } else {
             alert("No se pudo eliminar la transacción.");
-        }  
-    }catch(error){
-        console.error("Error al borrar:", error);
+        }
+    } catch (error) {
+        console.error("Error deleting:", error);
     }
 }
 
-// Ejecutar al cargar la página
-cargarTransactions();
-cargarCategorias();
+loadTransactions();
+loadCategories();
