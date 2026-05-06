@@ -1,0 +1,146 @@
+/* CSS/style.css */
+
+:root {
+    /* Variables para cambiar colores en un solo sitio y que afecte a todo */
+    --border-color: #e0e0e0;
+    --text-main: #2c3e50;
+    --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+}
+
+body { 
+    font-family: 'Inter', -apple-system, sans-serif; 
+    margin: 0;
+    padding: 60px 40px;
+    /* El degradado crea ese efecto de "fondo difuminado" profesional */
+    background: var(--bg-gradient); 
+    min-height: 100vh;
+    color: var(--text-main);
+    /* Suaviza el renderizado de fuentes en pantallas modernas */
+    -webkit-font-smoothing: antialiased; 
+}
+
+h1, h2 {
+    font-weight: 300; /* Letra fina para que se vea elegante */
+    letter-spacing: -1px; /* Letras más juntas, estilo editorial */
+    border-bottom: 1px solid black; /* La línea negra fina que pediste */
+    padding-bottom: 10px;
+    display: inline-block;
+    margin-bottom: 30px;
+}
+
+/* --- TABLA: Estilo "Glassmorphism" --- */
+table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    /* Fondo semitransparente para que se vea el difuminado de atrás */
+    background: rgba(255, 255, 255, 0.6); 
+    margin-top: 20px;
+    border-top: 2px solid black; /* Línea superior más gruesa para dar peso visual */
+}
+
+th, td { 
+    padding: 16px 12px; 
+    border-bottom: 1px solid var(--border-color); 
+    text-align: left; 
+}
+
+th { 
+    font-weight: 600;
+    text-transform: uppercase; /* Mayúsculas para los encabezados */
+    font-size: 0.7rem;
+    letter-spacing: 1.5px; /* Espaciado entre letras para legibilidad */
+    color: #888;
+}
+
+/* --- FORMULARIO: Sin bloques, solo líneas --- */
+#contenedor-formulario {
+    margin-bottom: 50px; 
+    background: transparent; /* Eliminamos el bloque gris anterior */
+}
+
+.campo {
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column; /* Label arriba, Input abajo */
+}
+
+input, select {
+    background: transparent;
+    border: none;
+    /* Solo línea inferior para un look muy limpio */
+    border-bottom: 1px solid var(--border-color); 
+    border-radius: 0; 
+    padding: 10px 5px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+    /* Al hacer clic, la línea se vuelve negra */
+    border-bottom-color: black; 
+}
+
+/* --- BOTONES: Estilo Arquitectura --- */
+button {
+    cursor: pointer;
+    padding: 10px 25px;
+    border-radius: 0; /* Sin curvas = más serio y minimalista */
+    border: 1px solid black;
+    background: transparent;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: 0.4s;
+}
+
+/* Botón principal (negro sólido) */
+button[type="submit"] {
+    background-color: black;
+    color: white;
+}
+
+/* Efecto Hover: se invierten los colores */
+button:hover {
+    background-color: black;
+    color: white;
+}
+
+button[type="submit"]:hover {
+    background-color: #333;
+}
+
+.btn-borrar {
+    /* El botón de borrar es una línea fina roja */
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
+    padding: 4px 10px;
+    font-size: 0.65rem;
+}
+
+.btn-borrar:hover {
+    background-color: #e74c3c;
+}
+
+/* --- DETALLES --- */
+.tipo-gasto { color: #e74c3c; }
+.tipo-ingreso { color: #27ae60; }
+
+.badge { 
+    padding: 3px 8px; 
+    border: 1px solid rgba(0,0,0,0.1); /* Borde casi invisible */
+    color: white; 
+    font-size: 0.65rem; 
+    font-weight: bold;
+}
+
+.table-controls {
+    margin-bottom: 40px;
+    display: flex;
+    gap: 50px;
+    align-items: center;
+}
+
+#orden-fecha {
+    border-bottom: 1px solid black;
+    font-weight: bold;
+}
