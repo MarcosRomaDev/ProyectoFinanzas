@@ -8,6 +8,7 @@ async function updateUI() {
     try {
         const data = await TransactionService.fetchTransactions(currentOrder);
         TransactionView.renderTable(data, handleDelete);
+        TransactionView.renderSummary(data);
     } catch (error) {
         console.error("Fallo al actualizar UI:", error);
     }

@@ -29,5 +29,29 @@ export const TransactionView = {
             
             this.tableBody.appendChild(row);
         });
+    },
+
+    renderSummary(transactions) {
+        let ingresos = 0;
+        let gastos = 0;
+
+        transactions.forEach(t => {
+            if (t.type === 'INGRESO') {
+                ingresos += t.amount;
+            } else {
+                gastos += t.amount;
+            }
+        });
+
+        const balance = ingresos - gastos;
+
+        // Inyectamos los valores en el HTML
+        document.getElementById('total-ingresos').textContent = `${ingresos.toFixed(2)}€`;
+        document.getElementById('total-gastos').textContent = `${gastos.toFixed(2)}€`;
+        document.getElementById('total-balance').textContent = `${balance.toFixed(2)}€`;
+        
+        // Un toque de color extra al balance
+        const balanceElement = document.getElementById('total-balance');
+        balanceElement.style.color = balance >= 0 ? '#28a745' : '#dc3545';
     }
 };
