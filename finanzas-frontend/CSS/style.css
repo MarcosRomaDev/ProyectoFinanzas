@@ -34,8 +34,6 @@ table {
     border-collapse: collapse; 
     /* Fondo semitransparente para que se vea el difuminado de atrás */
     background: rgba(255, 255, 255, 0.6); 
-    /* El efecto de desenfoque de cristal (solo funciona en navegadores modernos) */
-    backdrop-filter: blur(8px); 
     margin-top: 20px;
     border-top: 2px solid black; /* Línea superior más gruesa para dar peso visual */
 }

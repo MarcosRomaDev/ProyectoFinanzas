@@ -31,12 +31,13 @@ public class TransactionController {
         @RequestParam(defaultValue = "date") String sortField,
         @RequestParam(defaultValue = "desc") String direction
     ) {
+        System.err.println(">>> Backend recibiendo dirección: " + direction);
         Sort sort = direction.equalsIgnoreCase("asc") ?
                     Sort.by(sortField).ascending() :
                     Sort.by(sortField).descending();
         return repository.findAll(sort);
     }
-
+    
     @PostMapping
     public Transaction saveTransaction(@RequestBody Transaction newTransaction) {
         return repository.save(newTransaction);

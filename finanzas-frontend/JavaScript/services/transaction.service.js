@@ -4,6 +4,7 @@ export const TransactionService = {
     // Obtenemos los datos con el orden deseado
     async fetchTransactions(direction = 'desc') {
         const response = await fetch(`${API_URL}?sortField=date&direction=${direction}`);
+        console.log("Pidiendo URL: ", response);
         if (!response.ok) throw new Error("Error en la comunicación con la API");
         return await response.json();
     },
