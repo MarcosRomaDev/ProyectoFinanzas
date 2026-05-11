@@ -57,6 +57,24 @@ th {
   color: #888;
 }
 
+/* Gráfico */
+.dashboard-visual {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.chart-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 400px; /* Evita que el gráfico sea gigante en pantallas grandes */
+  height: 300px; /* Altura fija para mantener el orden */
+}
+
 /* --- FORMULARIO: Sin bloques, solo líneas --- */
 #contenedor-formulario {
   margin-bottom: 50px;
