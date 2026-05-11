@@ -2,10 +2,13 @@ const API_URL = "http://localhost:8080/api/transactions";
 
 export const TransactionService = {
   // Obtenemos los datos con el orden deseado
-  async fetchTransactions(direction = "desc") {
-    const response = await fetch(
-      `${API_URL}?sortField=date&direction=${direction}`,
-    );
+  async fetchTransactions(direction = "desc", categoryId = "") {
+    let url = `${API_URL}?sortField=date&direction=${direction}`;
+    if (categoryId !== "") {
+      url += `&categoryId=${categoryId}`;
+    }
+    const response = await fetch(url);
+
     console.log("Pidiendo URL: ", response);
     if (!response.ok) throw new Error("Error en la comunicación con la API");
     return await response.json();

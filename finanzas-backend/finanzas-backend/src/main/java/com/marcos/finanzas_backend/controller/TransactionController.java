@@ -29,12 +29,16 @@ public class TransactionController {
     @GetMapping
     public List<Transaction> getAll(
         @RequestParam(defaultValue = "date") String sortField,
-        @RequestParam(defaultValue = "desc") String direction
+        @RequestParam(defaultValue = "desc") String direction,
+        @RequestParam(required = false) Long categoryId
     ) {
-        System.err.println(">>> Backend recibiendo dirección: " + direction);
         Sort sort = direction.equalsIgnoreCase("asc") ?
                     Sort.by(sortField).ascending() :
                     Sort.by(sortField).descending();
+
+        if(categoryId != null){
+            return repository.findByCategoryId(categoryId, sort);
+        }
         return repository.findAll(sort);
     }
     

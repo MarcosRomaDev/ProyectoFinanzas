@@ -4,6 +4,7 @@ import { CategoryService } from "./services/category.service.js";
 import { CategoryView } from "./components/category.view.js";
 
 let currentOrder = "desc";
+let currentCategory = "";
 
 document.addEventListener("DOMContentLoaded", initApp);
 
@@ -20,7 +21,10 @@ async function initApp() {
 // Función centralizadora para refrescar la pantalla
 async function updateUI() {
   try {
-    const data = await TransactionService.fetchTransactions(currentOrder);
+    const data = await TransactionService.fetchTransactions(
+      currentOrder,
+      currentCategory,
+    );
     TransactionView.renderTable(data, handleDelete);
     TransactionView.renderSummary(data);
   } catch (error) {
@@ -34,6 +38,13 @@ async function handleDelete(id) {
     if (success) await updateUI();
   }
 }
+
+// Evento para filtrar por categoria
+document.getElementById("filtro-categoria").addEventListener("change", (e) => {
+  console.log("Cambiado filtro categoria a ", e.target.value);
+  currentCategory = e.target.value;
+  updateUI();
+});
 
 // Evento para cambiar el orden (Selector)
 document.getElementById("orden-fecha").addEventListener("change", async (e) => {
