@@ -1,21 +1,21 @@
 export const TransactionView = {
-    // Referencia al cuerpo de la tabla
-    tableBody: document.getElementById('transactions-body'),
+  // Referencia al cuerpo de la tabla
+  tableBody: document.getElementById("transactions-body"),
 
-    renderTable(transactions, onDeleteClick) {
-        if (!this.tableBody) return;
-        
-        // LIMPIEZA TOTAL: Esto garantiza que el orden se vea reflejado
-        this.tableBody.innerHTML = '';
+  renderTable(transactions, onDeleteClick) {
+    if (!this.tableBody) return;
 
-        transactions.forEach(t => {
-            const isGasto = t.type === 'GASTO';
-            const row = document.createElement('tr');
-            
-            row.innerHTML = `
+    // LIMPIEZA TOTAL: Esto garantiza que el orden se vea reflejado
+    this.tableBody.innerHTML = "";
+
+    transactions.forEach((t) => {
+      const isGasto = t.type === "GASTO";
+      const row = document.createElement("tr");
+
+      row.innerHTML = `
                 <td>${t.description}</td>
-                <td class="${isGasto ? 'tipo-gasto' : 'tipo-ingreso'}">
-                    ${isGasto ? '-' : '+'}${t.amount.toFixed(2)}€
+                <td class="${isGasto ? "tipo-gasto" : "tipo-ingreso"}">
+                    ${isGasto ? "-" : "+"}${t.amount.toFixed(2)}€
                 </td>
                 <td><span class="badge" style="background-color:${t.category.color}">${t.category.name}</span></td>
                 <td>${t.date}</td>
@@ -24,34 +24,39 @@ export const TransactionView = {
                 </td>
             `;
 
-            // Evento de borrado
-            row.querySelector('.btn-borrar').addEventListener('click', () => onDeleteClick(t.id));
-            
-            this.tableBody.appendChild(row);
-        });
-    },
+      // Evento de borrado
+      row
+        .querySelector(".btn-borrar")
+        .addEventListener("click", () => onDeleteClick(t.id));
 
-    renderSummary(transactions) {
-        let ingresos = 0;
-        let gastos = 0;
+      this.tableBody.appendChild(row);
+    });
+  },
 
-        transactions.forEach(t => {
-            if (t.type === 'INGRESO') {
-                ingresos += t.amount;
-            } else {
-                gastos += t.amount;
-            }
-        });
+  renderSummary(transactions) {
+    let ingresos = 0;
+    let gastos = 0;
 
-        const balance = ingresos - gastos;
+    transactions.forEach((t) => {
+      if (t.type === "INGRESO") {
+        ingresos += t.amount;
+      } else {
+        gastos += t.amount;
+      }
+    });
 
-        // Inyectamos los valores en el HTML
-        document.getElementById('total-ingresos').textContent = `${ingresos.toFixed(2)}€`;
-        document.getElementById('total-gastos').textContent = `${gastos.toFixed(2)}€`;
-        document.getElementById('total-balance').textContent = `${balance.toFixed(2)}€`;
-        
-        // Un toque de color extra al balance
-        const balanceElement = document.getElementById('total-balance');
-        balanceElement.style.color = balance >= 0 ? '#28a745' : '#dc3545';
-    }
+    const balance = ingresos - gastos;
+
+    // Inyectamos los valores en el HTML
+    document.getElementById("total-ingresos").textContent =
+      `${ingresos.toFixed(2)}€`;
+    document.getElementById("total-gastos").textContent =
+      `${gastos.toFixed(2)}€`;
+    document.getElementById("total-balance").textContent =
+      `${balance.toFixed(2)}€`;
+
+    // Un toque de color extra al balance
+    const balanceElement = document.getElementById("total-balance");
+    balanceElement.style.color = balance >= 0 ? "#28a745" : "#dc3545";
+  },
 };
