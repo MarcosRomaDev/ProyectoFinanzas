@@ -17,12 +17,12 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<Category> listar() {
+    public List<Category> list() {
         return repository.findAll();
     }
 
     @PostMapping
-    public Category crear(@RequestBody Category categoria) {
-        return repository.save(categoria);
+    public Category create(@RequestBody Category category) {
+        return repository.save(category);
     }
 }
