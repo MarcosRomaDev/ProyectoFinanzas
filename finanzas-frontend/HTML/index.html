@@ -23,17 +23,27 @@
       </div>
     </div>
 
-    <h1>listado de transacciones</h1>
+    <!-- Sección de Gráficos -->
+    <section class="dashboard-visual">
+      <div class="chart-wrapper">
+        <canvas id="graficoGastos"></canvas>
+      </div>
+      <div class="chart-wrapper">
+        <canvas id="graficoCategorias"></canvas>
+      </div>
+    </section>
+
+    <h1>Listado de transacciones</h1>
     <!-- Sección de controles de visualización -->
 
     <div class="table-controls">
       <button id="btn-actualizar">actualizar datos</button>
 
       <div class="sort-container">
-        <label for="orden-fecha">ordenar por fecha:</label>
+        <label for="orden-fecha">Ordenar por fecha:</label>
         <select id="orden-fecha">
-          <option value="desc">más recientes primero</option>
-          <option value="asc">más antiguas primero</option>
+          <option value="desc">Más recientes primero</option>
+          <option value="asc">Más antiguas primero</option>
         </select>
       </div>
 
@@ -63,10 +73,10 @@
     </table>
     <!-- Formulario para añadir nuevas transacciones -->
     <section id="contenedor-formulario">
-      <h2>nueva transacción</h2>
+      <h2>Nueva transacción</h2>
       <form id="transaccion-form">
         <div class="campo">
-          <label for="descripcion">descripción:</label>
+          <label for="descripcion">Descripción:</label>
           <input
             type="text"
             id="descripcion"
@@ -76,7 +86,7 @@
         </div>
 
         <div class="campo">
-          <label for="monto">importe:</label>
+          <label for="monto">Importe:</label>
           <input
             type="number"
             id="monto"
@@ -87,29 +97,30 @@
         </div>
 
         <div class="campo">
-          <label for="tipo">tipo:</label>
+          <label for="tipo">Tipo:</label>
           <select id="tipo">
-            <option value="GASTO">gasto</option>
-            <option value="INGRESO">ingreso</option>
+            <option value="GASTO">Gasto</option>
+            <option value="INGRESO">Ingreso</option>
           </select>
         </div>
 
         <div class="campo">
-          <label for="categoria-select">categoría:</label>
+          <label for="categoria-select">Categoría:</label>
           <select id="categoria-select" required>
-            <option value="">selecciona una categoría...</option>
+            <option value="">Selecciona una categoría...</option>
           </select>
         </div>
 
         <div class="campo">
-          <label for="fecha">fecha:</label>
+          <label for="fecha">Fecha:</label>
           <input type="date" id="fecha" required />
         </div>
 
-        <button type="submit">guardar transacción</button>
+        <button type="submit">Guardar Transacción</button>
       </form>
     </section>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="module" src="../JavaScript/main.js"></script>
   </body>
 </html>

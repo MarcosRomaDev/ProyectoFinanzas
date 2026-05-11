@@ -1,11 +1,12 @@
+let graficoGastos = null;
+let graficoCategorias = null;
+
 export const TransactionView = {
   // Referencia al cuerpo de la tabla
   tableBody: document.getElementById("transactions-body"),
 
   renderTable(transactions, onDeleteClick) {
     if (!this.tableBody) return;
-
-    // LIMPIEZA TOTAL: Esto garantiza que el orden se vea reflejado
     this.tableBody.innerHTML = "";
 
     transactions.forEach((t) => {
@@ -33,15 +34,93 @@ export const TransactionView = {
     });
   },
 
+  updateGraficoGastos(ingresos, gastos) {
+    const ctx = document.getElementById("graficoGastos").getContext("2d");
+
+    // 1. Limpieza: Si el gráfico ya existe, hay que eliminarlo
+    if (graficoGastos) {
+      graficoGastos.destroy();
+    }
+
+    // 2. Creación: Configuramos Chart.js
+    graficoGastos = new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: ["Ingresos", "Gastos"],
+        datasets: [
+          {
+            data: [ingresos, gastos],
+            backgroundColor: ["#2ecc71", "#e74c3c"], // Colores más modernos
+            borderWidth: 2,
+            hoverOffset: 10,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: { display: true, text: "Gastos / Ingresos" },
+          legend: {
+            position: "bottom",
+          },
+        },
+      },
+    });
+  },
+
+  updateGraficoCategorias(categoryData) {
+    const ctx = document.getElementById("graficoCategorias").getContext("2d");
+
+    if (graficoCategorias) {
+      graficoCategorias.destroy();
+    }
+
+    graficoCategorias = new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: Object.keys(categoryData),
+        datasets: [
+          {
+            data: Object.values(categoryData),
+            backgroundColor: [
+              "#3498db",
+              "#9b59b6",
+              "#f1c40f",
+              "#e67e22",
+              "#1abc9c",
+            ],
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: { display: true, text: "Gastos por Categoría" },
+          legend: { position: "bottom" },
+        },
+      },
+    });
+  },
+
   renderSummary(transactions) {
     let ingresos = 0;
     let gastos = 0;
+    const gastosPorCategoria = {};
 
     transactions.forEach((t) => {
       if (t.type === "INGRESO") {
         ingresos += t.amount;
       } else {
         gastos += t.amount;
+
+        // Lógica de agrupación:
+        const catName = t.category.name;
+        if (!gastosPorCategoria[catName]) {
+          gastosPorCategoria[catName] = 0;
+        }
+        gastosPorCategoria[catName] += t.amount;
       }
     });
 
@@ -58,5 +137,8 @@ export const TransactionView = {
     // Un toque de color extra al balance
     const balanceElement = document.getElementById("total-balance");
     balanceElement.style.color = balance >= 0 ? "#28a745" : "#dc3545";
+    // Llamamos al gráfico
+    this.updateGraficoGastos(ingresos, gastos);
+    this.updateGraficoCategorias(gastosPorCategoria);
   },
 };
