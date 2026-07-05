@@ -24,6 +24,16 @@ export const TransactionService = {
     return response.ok;
   },
 
+  // Actualizamos una transacción existente
+  async updateTransaction(id, transaction) {
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(transaction),
+    });
+    return response.ok;
+  },
+
   // Borramos por ID
   async deleteTransaction(id) {
     const response = await fetch(`${API_URL}/${id}`, { method: "DELETE" });

@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mis Finanzas</title>
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
     <link rel="stylesheet" href="../CSS/style.css" />
   </head>
   <body>
@@ -144,7 +145,7 @@
         <!-- Tarjeta: formulario para añadir nuevas transacciones -->
         <article class="card form-card" id="contenedor-formulario">
           <header class="card-header">
-            <h2>Nueva transacción</h2>
+            <h2 id="form-titulo">Nueva transacción</h2>
           </header>
 
           <form id="transaccion-form">
@@ -191,7 +192,10 @@
               <input type="date" id="fecha" required />
             </div>
 
-            <button type="submit" class="btn btn-primary">Guardar transacción</button>
+            <div class="form-actions">
+              <button type="submit" id="btn-guardar" class="btn btn-primary">Guardar transacción</button>
+              <button type="button" id="btn-cancelar" class="btn btn-ghost" hidden>Cancelar</button>
+            </div>
           </form>
         </article>
       </section>

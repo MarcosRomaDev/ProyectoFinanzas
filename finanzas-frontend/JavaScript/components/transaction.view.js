@@ -17,7 +17,7 @@ export const TransactionView = {
   // Referencia al cuerpo de la tabla
   tableBody: document.getElementById("transactions-body"),
 
-  renderTable(transactions, onDeleteClick) {
+  renderTable(transactions, onDeleteClick, onEditClick) {
     if (!this.tableBody) return;
     this.tableBody.innerHTML = "";
 
@@ -33,11 +33,17 @@ export const TransactionView = {
                 <td><span class="badge" style="background-color:${t.category.color}; color:${badgeTextColor(t.category.color)}">${t.category.name}</span></td>
                 <td>${t.date}</td>
                 <td>
-                    <button class="btn-borrar" data-id="${t.id}">Eliminar</button>
+                    <div class="row-actions">
+                        <button class="btn-editar" data-id="${t.id}">Editar</button>
+                        <button class="btn-borrar" data-id="${t.id}">Eliminar</button>
+                    </div>
                 </td>
             `;
 
-      // Evento de borrado
+      // Eventos de edición y borrado
+      row
+        .querySelector(".btn-editar")
+        .addEventListener("click", () => onEditClick(t));
       row
         .querySelector(".btn-borrar")
         .addEventListener("click", () => onDeleteClick(t.id));

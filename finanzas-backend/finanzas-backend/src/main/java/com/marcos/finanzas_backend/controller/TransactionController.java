@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -45,6 +46,17 @@ public class TransactionController {
     @PostMapping
     public Transaction saveTransaction(@RequestBody Transaction newTransaction) {
         return repository.save(newTransaction);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Transaction> updateTransaction(@PathVariable Long id, @RequestBody Transaction transaction) {
+        // Si no existe, devolvemos un 404 igual que en el borrado
+        if (!repository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        // Forzamos el id de la ruta para que save() actualice en vez de crear
+        transaction.setId(id);
+        return ResponseEntity.ok(repository.save(transaction));
     }
 
     @DeleteMapping("/{id}")

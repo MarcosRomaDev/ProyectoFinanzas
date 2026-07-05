@@ -5,6 +5,7 @@ import { CategoryView } from "./components/category.view.js";
 
 let currentOrder = "desc";
 let currentCategory = "";
+let editingId = null; // id de la transacción en edición (null = creando)
 
 document.addEventListener("DOMContentLoaded", initApp);
 
@@ -25,12 +26,43 @@ async function updateUI() {
       currentOrder,
       currentCategory,
     );
-    TransactionView.renderTable(data, handleDelete);
+    TransactionView.renderTable(data, handleDelete, enterEditMode);
     TransactionView.renderSummary(data);
   } catch (error) {
     console.error("Fallo al actualizar UI:", error);
   }
 }
+
+// Pasa el formulario a modo edición con los datos de la transacción
+function enterEditMode(t) {
+  editingId = t.id;
+  document.getElementById("descripcion").value = t.description;
+  document.getElementById("monto").value = t.amount;
+  document.getElementById("tipo").value = t.type;
+  document.getElementById("categoria-select").value = t.category.id;
+  document.getElementById("fecha").value = t.date;
+
+  document.getElementById("form-titulo").textContent = "Editar transacción";
+  document.getElementById("btn-guardar").textContent = "Guardar cambios";
+  document.getElementById("btn-cancelar").hidden = false;
+
+  document
+    .getElementById("contenedor-formulario")
+    .scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+// Vuelve al modo de creación y limpia el formulario
+function exitEditMode() {
+  editingId = null;
+  document.getElementById("transaccion-form").reset();
+  document.getElementById("form-titulo").textContent = "Nueva transacción";
+  document.getElementById("btn-guardar").textContent = "Guardar transacción";
+  document.getElementById("btn-cancelar").hidden = true;
+}
+
+document
+  .getElementById("btn-cancelar")
+  .addEventListener("click", exitEditMode);
 
 async function handleDelete(id) {
   if (confirm("¿Estás seguro de eliminar esta transacción?")) {
@@ -71,9 +103,13 @@ document
       },
     };
 
-    const success = await TransactionService.createTransaction(payload);
+    // Si hay una transacción en edición actualizamos; si no, creamos
+    const success = editingId
+      ? await TransactionService.updateTransaction(editingId, payload)
+      : await TransactionService.createTransaction(payload);
+
     if (success) {
-      e.target.reset();
+      exitEditMode();
       await updateUI();
     }
   });
