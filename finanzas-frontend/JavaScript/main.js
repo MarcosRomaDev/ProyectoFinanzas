@@ -39,6 +39,9 @@ async function handleDelete(id) {
   }
 }
 
+// Evento para refrescar los datos manualmente
+document.getElementById("btn-actualizar").addEventListener("click", updateUI);
+
 // Evento para filtrar por categoria
 document.getElementById("filtro-categoria").addEventListener("change", (e) => {
   console.log("Cambiado filtro categoria a ", e.target.value);

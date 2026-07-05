@@ -7,118 +7,195 @@
     <link rel="stylesheet" href="../CSS/style.css" />
   </head>
   <body>
-    <!-- Sección de Resumen (Dashboard) -->
-    <div id="dashboard-resumen" class="dashboard-grid">
-      <div class="card card-ingresos">
-        <h3>Total Ingresos</h3>
-        <p id="total-ingresos">0.00€</p>
-      </div>
-      <div class="card card-gastos">
-        <h3>Total Gastos</h3>
-        <p id="total-gastos">0.00€</p>
-      </div>
-      <div class="card card-balance">
-        <h3>Balance Neto</h3>
-        <p id="total-balance">0.00€</p>
-      </div>
-    </div>
-
-    <!-- Sección de Gráficos -->
-    <section class="dashboard-visual">
-      <div class="chart-wrapper">
-        <canvas id="graficoGastos"></canvas>
-      </div>
-      <div class="chart-wrapper">
-        <canvas id="graficoCategorias"></canvas>
-      </div>
-    </section>
-
-    <h1>Listado de transacciones</h1>
-    <!-- Sección de controles de visualización -->
-
-    <div class="table-controls">
-      <button id="btn-actualizar">actualizar datos</button>
-
-      <div class="sort-container">
-        <label for="orden-fecha">Ordenar por fecha:</label>
-        <select id="orden-fecha">
-          <option value="desc">Más recientes primero</option>
-          <option value="asc">Más antiguas primero</option>
-        </select>
-      </div>
-
-      <div class="filter">
-        <label for="filtro-categoria">Filtrar por categorias</label>
-        <select id="filtro-categoria">
-          <option value="TODAS">Todas las categorias</option>
-          <!-- El JS llenará el resto -->
-        </select>
-      </div>
-    </div>
-    <!-- Tabla de datos -->
-    <table>
-      <thead>
-        <tr>
-          <th>descripción</th>
-          <th>importe</th>
-          <th>categoría</th>
-          <th>fecha</th>
-          <th>acciones</th>
-        </tr>
-      </thead>
-      <!-- El ID debe coincidir con el que busca TransactionView.js -->
-      <tbody id="transactions-body">
-        <!-- Inyectado dinámicamente por la View -->
-      </tbody>
-    </table>
-    <!-- Formulario para añadir nuevas transacciones -->
-    <section id="contenedor-formulario">
-      <h2>Nueva transacción</h2>
-      <form id="transaccion-form">
-        <div class="campo">
-          <label for="descripcion">Descripción:</label>
-          <input
-            type="text"
-            id="descripcion"
-            placeholder="ej: compra supermercado"
-            required
-          />
+    <!-- Barra superior de la aplicación -->
+    <header class="app-header">
+      <div class="header-inner">
+        <div class="brand">
+          <span class="brand-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
+              <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
+              <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
+            </svg>
+          </span>
+          <div class="brand-text">
+            <h1>Mis Finanzas</h1>
+            <p>Panel de control personal</p>
+          </div>
         </div>
+        <button id="btn-actualizar" class="btn btn-ghost" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+            <path d="M21 3v6h-6" />
+          </svg>
+          Actualizar
+        </button>
+      </div>
+    </header>
 
-        <div class="campo">
-          <label for="monto">Importe:</label>
-          <input
-            type="number"
-            id="monto"
-            step="0.01"
-            placeholder="0.00"
-            required
-          />
-        </div>
+    <main class="app-main">
+      <!-- Sección de Resumen (Dashboard) -->
+      <section id="dashboard-resumen" class="kpi-grid" aria-label="Resumen">
+        <article class="card kpi-card kpi-ingresos">
+          <span class="kpi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 19V5" />
+              <path d="m5 12 7-7 7 7" />
+            </svg>
+          </span>
+          <div class="kpi-body">
+            <h3>Total Ingresos</h3>
+            <p id="total-ingresos">0.00€</p>
+          </div>
+        </article>
 
-        <div class="campo">
-          <label for="tipo">Tipo:</label>
-          <select id="tipo">
-            <option value="GASTO">Gasto</option>
-            <option value="INGRESO">Ingreso</option>
-          </select>
-        </div>
+        <article class="card kpi-card kpi-gastos">
+          <span class="kpi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 5v14" />
+              <path d="m19 12-7 7-7-7" />
+            </svg>
+          </span>
+          <div class="kpi-body">
+            <h3>Total Gastos</h3>
+            <p id="total-gastos">0.00€</p>
+          </div>
+        </article>
 
-        <div class="campo">
-          <label for="categoria-select">Categoría:</label>
-          <select id="categoria-select" required>
-            <option value="">Selecciona una categoría...</option>
-          </select>
-        </div>
+        <article class="card kpi-card kpi-balance">
+          <span class="kpi-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 3v18h18" />
+              <path d="m7 15 4-4 3 3 5-6" />
+            </svg>
+          </span>
+          <div class="kpi-body">
+            <h3>Balance Neto</h3>
+            <p id="total-balance">0.00€</p>
+          </div>
+        </article>
+      </section>
 
-        <div class="campo">
-          <label for="fecha">Fecha:</label>
-          <input type="date" id="fecha" required />
-        </div>
+      <!-- Sección de Gráficos -->
+      <section class="charts-grid" aria-label="Gráficos">
+        <article class="card chart-card">
+          <header class="card-header">
+            <h2>Ingresos vs Gastos</h2>
+          </header>
+          <div class="chart-wrapper">
+            <canvas id="graficoGastos"></canvas>
+          </div>
+        </article>
 
-        <button type="submit">Guardar Transacción</button>
-      </form>
-    </section>
+        <article class="card chart-card">
+          <header class="card-header">
+            <h2>Gastos por categoría</h2>
+          </header>
+          <div class="chart-wrapper">
+            <canvas id="graficoCategorias"></canvas>
+          </div>
+        </article>
+      </section>
+
+      <!-- Transacciones + Formulario -->
+      <section class="content-grid">
+        <!-- Tarjeta: listado de transacciones -->
+        <article class="card table-card">
+          <header class="card-header table-controls">
+            <h2>Transacciones</h2>
+            <div class="controls">
+              <div class="control">
+                <label for="orden-fecha">Ordenar</label>
+                <select id="orden-fecha">
+                  <option value="desc">Más recientes primero</option>
+                  <option value="asc">Más antiguas primero</option>
+                </select>
+              </div>
+
+              <div class="control">
+                <label for="filtro-categoria">Categoría</label>
+                <select id="filtro-categoria">
+                  <option value="TODAS">Todas las categorías</option>
+                  <!-- El JS llenará el resto -->
+                </select>
+              </div>
+            </div>
+          </header>
+
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Descripción</th>
+                  <th>Importe</th>
+                  <th>Categoría</th>
+                  <th>Fecha</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <!-- El ID debe coincidir con el que busca TransactionView.js -->
+              <tbody id="transactions-body">
+                <!-- Inyectado dinámicamente por la View -->
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <!-- Tarjeta: formulario para añadir nuevas transacciones -->
+        <article class="card form-card" id="contenedor-formulario">
+          <header class="card-header">
+            <h2>Nueva transacción</h2>
+          </header>
+
+          <form id="transaccion-form">
+            <div class="campo">
+              <label for="descripcion">Descripción</label>
+              <input
+                type="text"
+                id="descripcion"
+                placeholder="ej: compra supermercado"
+                required
+              />
+            </div>
+
+            <div class="campo-row">
+              <div class="campo">
+                <label for="monto">Importe (€)</label>
+                <input
+                  type="number"
+                  id="monto"
+                  step="0.01"
+                  placeholder="0.00"
+                  required
+                />
+              </div>
+
+              <div class="campo">
+                <label for="tipo">Tipo</label>
+                <select id="tipo">
+                  <option value="GASTO">Gasto</option>
+                  <option value="INGRESO">Ingreso</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="campo">
+              <label for="categoria-select">Categoría</label>
+              <select id="categoria-select" required>
+                <option value="">Selecciona una categoría...</option>
+              </select>
+            </div>
+
+            <div class="campo">
+              <label for="fecha">Fecha</label>
+              <input type="date" id="fecha" required />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Guardar transacción</button>
+          </form>
+        </article>
+      </section>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="module" src="../JavaScript/main.js"></script>

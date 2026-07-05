@@ -1,6 +1,18 @@
 let graficoGastos = null;
 let graficoCategorias = null;
 
+// Texto oscuro sobre fondos claros y blanco sobre oscuros, para que
+// la etiqueta sea legible con cualquier color de categoría
+function badgeTextColor(hex) {
+  if (!hex) return "#ffffff";
+  const n = hex.replace("#", "");
+  const r = Number.parseInt(n.substring(0, 2), 16);
+  const g = Number.parseInt(n.substring(2, 4), 16);
+  const b = Number.parseInt(n.substring(4, 6), 16);
+  const luminancia = 0.299 * r + 0.587 * g + 0.114 * b;
+  return luminancia > 160 ? "#16181d" : "#ffffff";
+}
+
 export const TransactionView = {
   // Referencia al cuerpo de la tabla
   tableBody: document.getElementById("transactions-body"),
@@ -18,7 +30,7 @@ export const TransactionView = {
                 <td class="${isGasto ? "tipo-gasto" : "tipo-ingreso"}">
                     ${isGasto ? "-" : "+"}${t.amount.toFixed(2)}€
                 </td>
-                <td><span class="badge" style="background-color:${t.category.color}">${t.category.name}</span></td>
+                <td><span class="badge" style="background-color:${t.category.color}; color:${badgeTextColor(t.category.color)}">${t.category.name}</span></td>
                 <td>${t.date}</td>
                 <td>
                     <button class="btn-borrar" data-id="${t.id}">Eliminar</button>
@@ -50,55 +62,75 @@ export const TransactionView = {
         datasets: [
           {
             data: [ingresos, gastos],
-            backgroundColor: ["#2ecc71", "#e74c3c"], // Colores más modernos
+            backgroundColor: ["#0ca30c", "#d03b3b"],
+            borderColor: "#ffffff",
             borderWidth: 2,
-            hoverOffset: 10,
+            hoverOffset: 8,
           },
         ],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        cutout: "68%",
         plugins: {
-          title: { display: true, text: "Gastos / Ingresos" },
+          // El título vive en la cabecera de la tarjeta (HTML)
           legend: {
             position: "bottom",
+            labels: { usePointStyle: true, boxWidth: 8, padding: 16 },
           },
         },
       },
     });
   },
 
-  updateGraficoCategorias(categoryData) {
+  updateGraficoCategorias(categoryData, categoryColors = {}) {
     const ctx = document.getElementById("graficoCategorias").getContext("2d");
 
     if (graficoCategorias) {
       graficoCategorias.destroy();
     }
 
+    // Paleta de reserva por si alguna categoría no trae color
+    const fallback = [
+      "#2a78d6",
+      "#1baf7a",
+      "#eda100",
+      "#008300",
+      "#4a3aa7",
+      "#e34948",
+      "#e87ba4",
+      "#eb6834",
+    ];
+    const labels = Object.keys(categoryData);
+
     graficoCategorias = new Chart(ctx, {
       type: "doughnut",
       data: {
-        labels: Object.keys(categoryData),
+        labels,
         datasets: [
           {
             data: Object.values(categoryData),
-            backgroundColor: [
-              "#3498db",
-              "#9b59b6",
-              "#f1c40f",
-              "#e67e22",
-              "#1abc9c",
-            ],
+            // El color sigue a la entidad: mismo color que su badge en la tabla
+            backgroundColor: labels.map(
+              (name, i) => categoryColors[name] || fallback[i % fallback.length],
+            ),
+            borderColor: "#ffffff",
+            borderWidth: 2,
+            hoverOffset: 8,
           },
         ],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        cutout: "68%",
         plugins: {
-          title: { display: true, text: "Gastos por Categoría" },
-          legend: { position: "bottom" },
+          // El título vive en la cabecera de la tarjeta (HTML)
+          legend: {
+            position: "bottom",
+            labels: { usePointStyle: true, boxWidth: 8, padding: 16 },
+          },
         },
       },
     });
@@ -108,6 +140,7 @@ export const TransactionView = {
     let ingresos = 0;
     let gastos = 0;
     const gastosPorCategoria = {};
+    const coloresPorCategoria = {};
 
     transactions.forEach((t) => {
       if (t.type === "INGRESO") {
@@ -121,6 +154,7 @@ export const TransactionView = {
           gastosPorCategoria[catName] = 0;
         }
         gastosPorCategoria[catName] += t.amount;
+        coloresPorCategoria[catName] = t.category.color;
       }
     });
 
@@ -136,9 +170,9 @@ export const TransactionView = {
 
     // Un toque de color extra al balance
     const balanceElement = document.getElementById("total-balance");
-    balanceElement.style.color = balance >= 0 ? "#28a745" : "#dc3545";
+    balanceElement.style.color = balance >= 0 ? "#067647" : "#b42318";
     // Llamamos al gráfico
     this.updateGraficoGastos(ingresos, gastos);
-    this.updateGraficoCategorias(gastosPorCategoria);
+    this.updateGraficoCategorias(gastosPorCategoria, coloresPorCategoria);
   },
 };
