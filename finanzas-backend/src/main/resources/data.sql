@@ -27,20 +27,22 @@ INSERT INTO transactions (description, amount, type, date, category_id) VALUES (
 INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Gasolina Repsol', 60.00, 'GASTO', '2026-04-25', 3);
 INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Ticket Parking', 4.50, 'GASTO', '2026-05-02', 3);
 
--- 4. OCIO (ID 4)
-INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Entradas Cine', 18.00, 'GASTO', '2026-04-30', 4);
-INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Copas con amigos', 35.00, 'GASTO', '2026-05-01', 4);
-INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Suscripción Gimnasio', 29.90, 'GASTO', '2026-04-01', 4);
+-- 4. SUMINISTROS (ID 4)
+INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Disney+', 8.99, 'GASTO', '2026-04-15', 4);
+INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Spotify Family', 15.99, 'GASTO', '2026-04-20', 4);
+INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('iCloud Storage', 0.99, 'GASTO', '2026-05-01', 4);
 
--- 5. SUSCRIPCIONES (ID 5)
-INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Disney+', 8.99, 'GASTO', '2026-04-15', 5);
-INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Spotify Family', 15.99, 'GASTO', '2026-04-20', 5);
-INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('iCloud Storage', 0.99, 'GASTO', '2026-05-01', 5);
+-- 5. OCIO (ID 5)
+INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Entradas Cine', 18.00, 'GASTO', '2026-04-30', 5);
+INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Copas con amigos', 35.00, 'GASTO', '2026-05-01', 5);
 
--- 6. NÓMINA (ID 6)
-INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Nómina Abril', 2200.00, 'INGRESO', '2026-04-30', 6);
-INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Bonus Productividad', 300.00, 'INGRESO', '2026-04-30', 6);
+-- 6. SALUD (ID 6)
+INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Suscripción Gimnasio', 29.90, 'GASTO', '2026-04-01', 6);
 
--- 7. VENTAS EXTRA (ID 7)
-INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Venta Bicicleta Vieja', 150.00, 'INGRESO', '2026-05-01', 7);
-INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Reembolso Amazon', 45.99, 'INGRESO', '2026-04-28', 7);
+-- 7. NÓMINA (ID 7)
+INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Nómina Abril', 2200.00, 'INGRESO', '2026-04-30', 7);
+INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Bonus Productividad', 300.00, 'INGRESO', '2026-04-30', 7);
+
+-- 8. VENTAS EXTRA (ID 8)
+INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Venta Bicicleta Vieja', 150.00, 'INGRESO', '2026-05-01', 8);
+INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Reembolso Amazon', 45.99, 'INGRESO', '2026-04-28', 8);
