@@ -2,7 +2,7 @@
 INSERT INTO categories (name, color) VALUES ('Alimentación', '#FF5733');
 INSERT INTO categories (name, color) VALUES ('Vivienda', '#3357FF');
 INSERT INTO categories (name, color) VALUES ('Transporte', '#FFC300');
-INSERT INTO categories (name, color) VALUES ('Suministros', '#33FF57');
+INSERT INTO categories (name, color) VALUES ('Suscripciones', '#33FF57');
 INSERT INTO categories (name, color) VALUES ('Ocio', '#C70039');
 INSERT INTO categories (name, color) VALUES ('Salud', '#33FFF3');
 
@@ -27,7 +27,7 @@ INSERT INTO transactions (description, amount, type, date, category_id) VALUES (
 INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Gasolina Repsol', 60.00, 'GASTO', '2026-04-25', 3);
 INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Ticket Parking', 4.50, 'GASTO', '2026-05-02', 3);
 
--- 4. SUMINISTROS (ID 4)
+-- 4. SUSCRIPCIONES (ID 4)
 INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Disney+', 8.99, 'GASTO', '2026-04-15', 4);
 INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('Spotify Family', 15.99, 'GASTO', '2026-04-20', 4);
 INSERT INTO transactions (description, amount, type, date, category_id) VALUES ('iCloud Storage', 0.99, 'GASTO', '2026-05-01', 4);
