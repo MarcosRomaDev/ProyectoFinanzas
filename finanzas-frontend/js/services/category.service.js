@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8080/api/categories";
+const API_URL = "https://proyectofinanzas-x5wl.onrender.com/api/categories";
 
 export const CategoryService = {
   async fetchCategories() {
