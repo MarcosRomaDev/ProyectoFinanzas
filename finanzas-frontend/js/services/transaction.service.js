@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8080/api/transactions";
+const API_URL = "https://proyectofinanzas-x5wl.onrender.com/api/transactions";
 
 export const TransactionService = {
   // Obtenemos los datos con el orden deseado

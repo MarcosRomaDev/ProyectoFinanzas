@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 // Aquí indicamos quién tiene permiso para llamar a la API
                 // El 5500 es el puerto típico del "Live Server" de VS Code
-                .allowedOrigins("http://127.0.0.1:5500", "http://localhost:5500") 
+                .allowedOrigins("http://127.0.0.1:5500", "http://localhost:5500", "https://marcosromadev.github.io")
                 // Métodos permitidos
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 // Permitimos cualquier cabecera (necesario para JSON)
